@@ -16,7 +16,7 @@ const initializeDBAndServer = async () => {
       filename: dbPath,
       driver: sqlite3.Database,
     });
-    app.listen(3002, () => {
+    app.listen(3000, () => {
       console.log("Server Running at http://localhost:3000/");
     });
   } catch (e) {
@@ -82,15 +82,14 @@ app.get("/players/:playerId", async (request, response) => {
 // API 4
 
 app.put("/players/:playerId", async (request, response) => {
+  const { playerName, jerseyNumber } = request.body;
   const { playerId } = request.params;
-  const playersArray = request.body;
-  const { playerName, jerseyNumber, role } = playersArray;
   const sqPutQry = `
     UPDATE 
     cricket_team
     SET 
-    player_name = '${playerName}'
-    jersey_number = ${jerseyNumber}
+    player_name = '${playerName}',
+    jersey_number = ${jerseyNumber},
     role = '${role}'
     WHERE 
     player_id = ${playerId}
